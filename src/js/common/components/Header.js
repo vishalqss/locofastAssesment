@@ -1,5 +1,5 @@
+import React from 'react';
 import CloseIcon from "../../../view/CloseIcon.svg";
-import React from "react";
 
 
 const Header = (props) => {

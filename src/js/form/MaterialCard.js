@@ -1,3 +1,4 @@
+import React from 'react';
 import cn from "classnames";
 import Button from '../common/components/Button';
 import {COLORS_AVAILABLE, COMMON_DESC} from '../common/constants'

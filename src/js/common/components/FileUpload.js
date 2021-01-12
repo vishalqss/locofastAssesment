@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import fileIcon from '../../../view/filePicker.svg';
 import '../../../css/App.scss';
 
