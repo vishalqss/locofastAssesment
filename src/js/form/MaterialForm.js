@@ -5,15 +5,16 @@ import eyeIcon from '../../view/eyeIcon.svg';
 import Alert from '../../view/Alert.svg';
 import Header from '../common/components/Header';
 import Footer from '../common/components/Footer';
+import FileUpload from "../common/components/FileUpload";
+import Select from "../common/components/Select";
 import {ASSIGNMENT_OPTIONS, FACTORY_OPTIONS} from "../common/constants";
 import '../../css/App.scss';
-import FileUpload from "../common/components/FileUpload";
 
 
 
 const fieldConfig = [
-    {name: "factory", label: "Factory", type: "select", dependentField: "", options: FACTORY_OPTIONS},
-    {name: "assignment", label: "Assign for design", type: "select", dependentField: "factory", options: ASSIGNMENT_OPTIONS},
+    {name: "factory", label: "Factory", type: "select", dependentField: "", placeHolder: "Select Factory", options: FACTORY_OPTIONS},
+    {name: "assignment", label: "Assign for design", type: "select", placeHolder: "Search by Name or Design ID", dependentField: "factory", options: ASSIGNMENT_OPTIONS},
     {name: "quantity", label: "Assign quantity", type: "text", dependentField: "assignment"},
     {name: "inventory", label: "Available Inventory", type: "text", dependentField: "assignment"},
     {name: "challan", label: "Attach Challan", type: "file", dependentField: "quantity"},
@@ -46,13 +47,11 @@ function MaterialCard(props) {
                         <p>Assign To Factory</p>
                         {saved && <img src={Alert} style={{marginTop: "24px"}}/>}
 
-                         {fieldConfig.map(({name, label, type, dependentField, options}) => {
+                         {fieldConfig.map(({name, label, type, dependentField, options, placeHolder}) => {
                              let field = null;
                              switch(type){
                                  case "select":
-                                     let optionList = options.map((val) => (<option value={val} className={"selectOptions"}>{val}</option>))
-                                     optionList.unshift(<option value="" disabled selected>Select your option</option>);
-                                     field = <select name={name} className={"fieldInput"} value={values[name]} onChange={onChange}>{optionList}</select>
+                                     field = <Select name={name} className={"fieldInput"} value={values[name]} onChange={onChange} options={options} placeholder={placeHolder}/>
                                      break;
                                  case "text": field = <input name={name} className={"fieldInput"} style={{border: name === "inventory" && "none"}} value={values[name]} onChange={onChange}/>
                                      break;
@@ -61,9 +60,9 @@ function MaterialCard(props) {
                                  default :  break;
                              }
                             return (dependentField && !values[dependentField] || (saved && name === "inventory") ? null :
-                                <span className={cn("field", type === "text" && "textField")}>
-                                    <label className={saved && "savedLabel"}>{saved && name === "challan" && "Challan" || label}{!saved && name !== "inventory" && '*'}</label>
-                                    {saved ? <label className={name === "challan" && "challanLabel"}>{values[name]} {name === "challan" && <img src={eyeIcon} className={"Eye-Icon"}/>}</label> : field}
+                                <span className={cn("field", type === "text" ? "textField" : "")}>
+                                    <label className={saved ? "savedLabel" : ""}>{saved && name === "challan" && "Challan" || label}{!saved && name !== "inventory" && '*'}</label>
+                                    {saved ? <label className={name === "challan" ? "challanLabel" : ""}>{values[name]} {name === "challan" && <img src={eyeIcon} className={"Eye-Icon"}/>}</label> : field}
                                 </span>)
                         })}
                     </div>
